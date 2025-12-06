@@ -481,7 +481,7 @@ if (!opts.widget) {
     settingsSelectedRoom.bindText('roomName', floorplanningHelper.roomName, floorplanningHelper);
 
     settingsSelectedRoom3D.addDropDown('Floor Textures', floor_texture_keys, selectFloorTexture);
-    settingsSelectedRoom3D.addImage('Floor Texture:', floor_textures[floor_texture_keys[0]].colormap || TEXTURE_NO_PREVIEW, null);
+    settingsSelectedRoom3D.addImage('Floor Texture:', floor_textures[floor_texture_keys[0]].colormap || TEXTURE_NO_PREVIEW, () => { });
     settingsSelectedRoom3D.addColor('Floor Texture Color:', floor_textures[floor_texture_keys[0]].color || '#FFFFFF', selectFloorTextureColor);
     settingsSelectedRoom3D.addButton('Apply', selectFloorTexture);
 
@@ -491,12 +491,12 @@ if (!opts.widget) {
     settingsSelectedRoom3D.addButton('Apply', selectWallTexture);
 
     settingsSelectedWall3D.addDropDown('Wall Textures', wall_texture_keys, selectWallTexture);
-    settingsSelectedWall3D.addImage('Wall Texture:', wall_textures[wall_texture_keys[0]].colormap || TEXTURE_NO_PREVIEW, null);
+    settingsSelectedWall3D.addImage('Wall Texture:', wall_textures[wall_texture_keys[0]].colormap || TEXTURE_NO_PREVIEW, () => { });
     settingsSelectedWall3D.addColor('Wall Texture Color:', wall_textures[wall_texture_keys[0]].color || '#FFFFFF', selectWallTextureColor);
     settingsSelectedWall3D.addButton('Apply', selectWallTexture);
 
     settingsSelectedWall3D.addDropDown('Select Door', doorTypes, selectDoorForWall);
-    settingsSelectedWall3D.addImage('Door Preview:', doorsData[doorTypes[0]].src, null);
+    settingsSelectedWall3D.addImage('Door Preview:', doorsData[doorTypes[0]].src, () => { });
     settingsSelectedWall3D.addButton('Add', addDoorForWall);
 
     settingsViewer3d.addHTML('Tips:', '<p>Click and drag to rotate the room in 360\xB0</p><p>Add room items <ul><li>Add parametric doors</li><li>Other items (Coming soon)</li></ul></p><p>Drag and Place items(pink boxes and parametric doors) in the room</p><p>There are 8 different types of items <ul><li>1: FloorItem</li> <li>2: WallItem</li> <li>3: InWallItem</li> <li>7: InWallFloorItem</li> <li>8: OnFloorItem</li> <li>9: WallFloorItem</li><li>0: Item</li> <li>4: RoofItem</li></ul></p>');
