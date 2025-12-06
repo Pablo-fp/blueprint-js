@@ -3,9 +3,11 @@ import FileSaver from 'file-saver';
 import FPS from 'fps-now';
 
 import { BlueprintJS } from './scripts/blueprint.js';
-import { EVENT_LOADED, EVENT_NOTHING_2D_SELECTED, EVENT_CORNER_2D_CLICKED, EVENT_WALL_2D_CLICKED, 
-    EVENT_ROOM_2D_CLICKED, EVENT_WALL_CLICKED, EVENT_ROOM_CLICKED, EVENT_NO_ITEM_SELECTED, 
-    EVENT_ITEM_SELECTED, EVENT_GLTF_READY } from './scripts/core/events.js';
+import {
+    EVENT_LOADED, EVENT_NOTHING_2D_SELECTED, EVENT_CORNER_2D_CLICKED, EVENT_WALL_2D_CLICKED,
+    EVENT_ROOM_2D_CLICKED, EVENT_WALL_CLICKED, EVENT_ROOM_CLICKED, EVENT_NO_ITEM_SELECTED,
+    EVENT_ITEM_SELECTED, EVENT_GLTF_READY
+} from './scripts/core/events.js';
 import { Configuration, configDimUnit, viewBounds, itemStatistics } from './scripts/core/configuration.js';
 import { availableDimUnits, dimMeter, TEXTURE_NO_PREVIEW } from './scripts/core/constants.js';
 import QuickSettings from 'quicksettings';
@@ -17,7 +19,7 @@ import * as floor_textures_json from './floor_textures.json';
 import * as wall_textures_json from './wall_textures.json';
 import * as default_room_json from './design.json';
 
-const fps = FPS.of({x: 0, y: 0});
+const fps = FPS.of({ x: 0, y: 0 });
 fps.start();
 
 
@@ -69,8 +71,8 @@ let opts = {
             'corner-radius': 12.5,
             'boundary-point-radius': 5.0,
             'boundary-line-thickness': 2.0,
-            'boundary-point-color':'#030303',
-            'boundary-line-color':'#090909',
+            'boundary-point-color': '#030303',
+            'boundary-line-color': '#090909',
             pannable: true,
             zoomable: true,
             scale: false,
@@ -89,7 +91,7 @@ let opts = {
     },
     viewer3d: {
         id: 'bp3djs-viewer3d',
-        viewer3dOptions:{
+        viewer3dOptions: {
             occludedWalls: false,
             occludedRoofs: false
         }
@@ -104,10 +106,10 @@ function selectFloorTexture(data) {
         data = settingsSelectedRoom3D.getValue('Floor Textures');
     }
     let floor_texture_pack = floor_textures[data.value];
-    if(floor_texture_pack.colormap){
+    if (floor_texture_pack.colormap) {
         settingsSelectedRoom3D.setValue('Floor Texture:', floor_texture_pack.colormap);
     }
-    else{
+    else {
         settingsSelectedRoom3D.setValue('Floor Texture:', TEXTURE_NO_PREVIEW);
     }
     roomplanningHelper.roomTexturePack = floor_texture_pack;
@@ -125,20 +127,20 @@ function selectWallTexture(data) {
     let wall_texture_pack = wall_textures[data.value];
     let colormap = wall_texture_pack.colormap;
     if (settingsSelectedWall3D._hidden && !settingsSelectedRoom3D._hidden) {
-        if(colormap){
+        if (colormap) {
             settingsSelectedRoom3D.setValue('All Wall Texture:', colormap);
-        } 
-        else{
+        }
+        else {
             settingsSelectedRoom3D.setValue('All Wall Texture:', TEXTURE_NO_PREVIEW);
         }
         roomplanningHelper.roomWallsTexturePack = wall_texture_pack;
     } else {
-        if(colormap){
+        if (colormap) {
             settingsSelectedWall3D.setValue('Wall Texture:', wall_texture_pack.colormap);
-        }  
-        else{
+        }
+        else {
             settingsSelectedWall3D.setValue('Wall Texture:', TEXTURE_NO_PREVIEW);
-        }      
+        }
         roomplanningHelper.wallTexturePack = wall_texture_pack;
     }
 }
@@ -148,11 +150,11 @@ function selectFloorTextureColor(data) {
     roomplanningHelper.setRoomFloorColor(data);
 }
 
-function selectWallTextureColor(data) {   
-    
+function selectWallTextureColor(data) {
+
     if (settingsSelectedWall3D._hidden && !settingsSelectedRoom3D._hidden) {
         roomplanningHelper.setRoomWallsTextureColor(data);
-    } 
+    }
     else {
         roomplanningHelper.setWallColor(data);
     }
@@ -210,7 +212,7 @@ function switchViewer2DToTransform() {
 
 function loadBlueprint3DDesign(filedata) {
     let reader = new FileReader();
-    reader.onload = function(event) {
+    reader.onload = function (event) {
         let data = event.target.result;
         blueprint3d.model.loadSerialized(data);
     };
@@ -219,7 +221,7 @@ function loadBlueprint3DDesign(filedata) {
 
 function loadLockedBlueprint3DDesign(filedata) {
     let reader = new FileReader();
-    reader.onload = function(event) {
+    reader.onload = function (event) {
         let data = event.target.result;
         blueprint3d.model.loadLockedSerialized(data);
     };
@@ -327,7 +329,7 @@ function exportDesignAsPackage() {
         });
         zip.file(model_path, gltfBlob); //, { base64: false }); //, { base64: true }
     }
-    zip.generateAsync({ type: "blob" }).then(function(content) {
+    zip.generateAsync({ type: "blob" }).then(function (content) {
         FileSaver.saveAs(content, "YourBlueprintProject.zip");
     });
 
@@ -354,35 +356,35 @@ configurationHelper = blueprint3d.configurationHelper;
 floorplanningHelper = blueprint3d.floorplanningHelper;
 roomplanningHelper = blueprint3d.roomplanningHelper;
 
-blueprint3d.model.addEventListener(EVENT_LOADED, function() { console.log('LOAD SERIALIZED JSON ::: '); });
-blueprint3d.floorplanner.addFloorplanListener(EVENT_NOTHING_2D_SELECTED, function() {
+blueprint3d.model.addEventListener(EVENT_LOADED, function () { console.log('LOAD SERIALIZED JSON ::: '); });
+blueprint3d.floorplanner.addFloorplanListener(EVENT_NOTHING_2D_SELECTED, function () {
     settingsSelectedCorner.hide();
     settingsSelectedWall.hide();
     settingsSelectedRoom.hide();
     settingsViewer2d.hideControl('Delete');
 });
-blueprint3d.floorplanner.addFloorplanListener(EVENT_CORNER_2D_CLICKED, function(evt) {
+blueprint3d.floorplanner.addFloorplanListener(EVENT_CORNER_2D_CLICKED, function (evt) {
     settingsSelectedCorner.show();
     settingsSelectedWall.hide();
     settingsSelectedRoom.hide();
     settingsViewer2d.showControl('Delete');
     settingsSelectedCorner.setValue('cornerElevation', Dimensioning.cmToMeasureRaw(evt.item.elevation));
 });
-blueprint3d.floorplanner.addFloorplanListener(EVENT_WALL_2D_CLICKED, function(evt) {
+blueprint3d.floorplanner.addFloorplanListener(EVENT_WALL_2D_CLICKED, function (evt) {
     settingsSelectedCorner.hide();
     settingsSelectedWall.show();
     settingsSelectedRoom.hide();
     settingsViewer2d.showControl('Delete');
     settingsSelectedWall.setValue('wallThickness', Dimensioning.cmToMeasureRaw(evt.item.thickness));
 });
-blueprint3d.floorplanner.addFloorplanListener(EVENT_ROOM_2D_CLICKED, function(evt) {
+blueprint3d.floorplanner.addFloorplanListener(EVENT_ROOM_2D_CLICKED, function (evt) {
     settingsSelectedCorner.hide();
     settingsSelectedWall.hide();
     settingsSelectedRoom.show();
     settingsSelectedRoom.setValue('roomName', evt.item.name);
 });
 
-blueprint3d.roomplanner.addRoomplanListener(EVENT_ITEM_SELECTED, function(evt) {
+blueprint3d.roomplanner.addRoomplanListener(EVENT_ITEM_SELECTED, function (evt) {
     settingsSelectedWall3D.hide();
     settingsSelectedRoom3D.hide();
     let itemModel = evt.itemModel;
@@ -395,7 +397,7 @@ blueprint3d.roomplanner.addRoomplanListener(EVENT_ITEM_SELECTED, function(evt) {
     }
 });
 
-blueprint3d.roomplanner.addRoomplanListener(EVENT_NO_ITEM_SELECTED, function() {
+blueprint3d.roomplanner.addRoomplanListener(EVENT_NO_ITEM_SELECTED, function () {
     settingsSelectedWall3D.hide();
     settingsSelectedRoom3D.hide();
     if (parametricContextInterface) {
@@ -403,7 +405,7 @@ blueprint3d.roomplanner.addRoomplanListener(EVENT_NO_ITEM_SELECTED, function() {
         parametricContextInterface = null;
     }
 });
-blueprint3d.roomplanner.addRoomplanListener(EVENT_WALL_CLICKED, function(evt) {
+blueprint3d.roomplanner.addRoomplanListener(EVENT_WALL_CLICKED, function (evt) {
     settingsSelectedWall3D.show();
     settingsSelectedRoom3D.hide();
     if (parametricContextInterface) {
@@ -411,7 +413,7 @@ blueprint3d.roomplanner.addRoomplanListener(EVENT_WALL_CLICKED, function(evt) {
         parametricContextInterface = null;
     }
 });
-blueprint3d.roomplanner.addRoomplanListener(EVENT_ROOM_CLICKED, function(evt) {
+blueprint3d.roomplanner.addRoomplanListener(EVENT_ROOM_CLICKED, function (evt) {
     settingsSelectedWall3D.hide();
     settingsSelectedRoom3D.show();
     if (parametricContextInterface) {
@@ -419,7 +421,7 @@ blueprint3d.roomplanner.addRoomplanListener(EVENT_ROOM_CLICKED, function(evt) {
         parametricContextInterface = null;
     }
 });
-blueprint3d.roomplanner.addRoomplanListener(EVENT_GLTF_READY, function(evt) {
+blueprint3d.roomplanner.addRoomplanListener(EVENT_GLTF_READY, function (evt) {
     let data = evt.gltf;
     let a = window.document.createElement('a');
     let blob = new Blob([data], { type: 'text' });
@@ -527,4 +529,16 @@ if (!opts.widget) {
     settingsViewer3d.hide();
     settingsSelectedWall3D.hide();
     settingsSelectedRoom3D.hide();
+
+    // Fix: Ensure panels stay on the right side on resize and initial load
+    function repositionPanels() {
+        const xPos = app_parent.clientWidth - panelWidths;
+        uxInterface.setPosition(xPos, startY);
+        settingsViewer2d.setPosition(xPos, startY + uxInterfaceHeight);
+        settingsViewer3d.setPosition(xPos, startY + uxInterfaceHeight);
+    }
+
+    window.addEventListener('resize', repositionPanels);
+    setTimeout(repositionPanels, 100); // Force update after layout
 }
+
